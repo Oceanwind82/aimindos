@@ -12,6 +12,7 @@
     "@humanfs/types": "^0.15.0",
     "@supabase/supabase-js": "^2.55.0",
     "memfs": "^4.36.3",
+    "minimatch": "^10.0.3",
     "next": "15.4.6",
     "openai": "^5.12.2",
     "react": "19.1.0",
@@ -19,13 +20,17 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@ljharb/tsconfig": "^0.3.2",
     "@tailwindcss/postcss": "^4",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
+    "jest": "^30.0.5",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.1",
     "typescript": "^5"
   }
 }
