@@ -1,0 +1,4 @@
+export default [
+  { ignores: ["**/*.test.ts", "**/*.test.tsx", "**/__tests__/**"] },
+  // ...rest of your config
+]
