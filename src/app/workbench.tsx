@@ -39,18 +39,17 @@ export default function Workbench() {
     <div className="relative h-[70vh] rounded-2xl border border-white/10 bg-gradient-to-br from-neutral-900 to-black overflow-hidden"
          onPointerMove={onPointerMove} onPointerUp={onPointerUp}>
       {panels.map(p => (
-        <div key={p.id}
-             className="absolute card select-none"
+        <div key={p.id} className="absolute rounded-2xl border border-white/10 bg-black/30 shadow select-none"
              style={{ left: p.x, top: p.y, width: p.w, height: p.h }}>
-          <div className="flex h-10 items-center justify-between border-b border-white/10"
+          <div className="flex h-10 items-center justify-between border-b border-white/10 px-3"
                onPointerDown={(e) => onPointerDown(e, p.id)}>
-            <div className="px-3 font-medium">{p.title}</div>
-            <div className="px-3 text-xs text-white/50">drag</div>
+            <div className="font-medium">{p.title}</div>
+            <div className="text-xs text-white/50">drag</div>
           </div>
           <div className="p-3 h-[calc(100%-2.5rem)] overflow-auto text-sm text-white/80">
-            {p.id === "notes" && <Notes />}
-            {p.id === "tasks" && <Tasks />}
-            {p.id === "logs"  && <Logs />}
+            {p.id === "notes" && <Notes/>}
+            {p.id === "tasks" && <Tasks/>}
+            {p.id === "logs"  && <Logs/>}
           </div>
         </div>
       ))}
@@ -58,32 +57,14 @@ export default function Workbench() {
   );
 }
 
-function Notes() {
-  const [txt, setTxt] = useState("");
-  return (
-    <textarea value={txt} onChange={e => setTxt(e.target.value)}
-      className="w-full h-full bg-transparent outline-none resize-none" placeholder="Write notes..." />
-  );
-}
-function Tasks() {
-  const [items, setItems] = useState<string[]>([]);
-  const [inp, setInp] = useState("");
-  return (
-    <div className="space-y-2">
-      <form onSubmit={e => { e.preventDefault(); if (inp.trim()) { setItems(i=>[...i, inp.trim()]); setInp(""); }}}>
-        <input value={inp} onChange={e=>setInp(e.target.value)} placeholder="Add task..."
-          className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 outline-none" />
-      </form>
-      <ul className="space-y-1">{items.map((t,i)=><li key={i}>• {t}</li>)}</ul>
-    </div>
-  );
-}
-function Logs() {
-  const [logs, setLogs] = useState<string[]>(["Workbench ready (no 3D)."]);
-  return (
-    <div className="space-y-2">
-      <button className="btn" onClick={()=>setLogs(l=>[...l, `Ping @ ${new Date().toLocaleTimeString()}`])}>Add Log</button>
-      <ul className="text-xs space-y-1">{logs.map((l,i)=><li key={i}>{l}</li>)}</ul>
-    </div>
-  );
-}
+/* Add the following import at the top of your file */
+// ...existing code...
+
+function Notes(){const [t,setT]=useState("");return <textarea value={t} onChange={e=>setT(e.target.value)} className="w-full h-full bg-transparent outline-none resize-none" placeholder="Write notes..." />;}
+function Tasks(){const [items,setItems]=useState<string[]>([]);const [inp,setInp]=useState("");return(<div className="space-y-2">
+  <form onSubmit={e=>{e.preventDefault();if(inp.trim()){setItems(i=>[...i,inp.trim()]);setInp("");}}}>
+    <input value={inp} onChange={e=>setInp(e.target.value)} placeholder="Add task..." className="w-full rounded-lg border border-white/10 bg-black/30 px-3 py-2 outline-none"/>
+  </form><ul className="space-y-1">{items.map((t,i)=><li key={i}>• {t}</li>)}</ul></div>);}
+function Logs(){const [logs,setLogs]=useState<string[]>(["Workbench ready (no 3D)."]);return(<div className="space-y-2">
+  <button className="inline-flex items-center justify-center rounded-xl px-4 py-2 border border-white/10 hover:bg-white/10" onClick={()=>setLogs(l=>[...l,`Ping @ ${new Date().toLocaleTimeString()}`])}>Add Log</button>
+  <ul className="text-xs space-y-1">{logs.map((l,i)=><li key={i}>{l}</li>)}</ul></div>);}
