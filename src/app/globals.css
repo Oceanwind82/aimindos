@@ -1,13 +1,8 @@
 
-
-
 @import "tailwindcss/preflight";
 @tailwind utilities;
 
-/* Optional: utility helpers */
-.container { @apply mx-auto max-w-6xl px-4; }
-.card { @apply rounded-2xl border border-white/10 bg-black/30 p-4 shadow; }
-.btn { @apply inline-flex items-center justify-center rounded-xl px-4 py-2 border border-white/10 hover:bg-white/10; }
+/* Keep custom CSS minimal; avoid @apply for now to prevent Tailwind v4 @reference issues. */
 
 :root {
   --background: #ffffff;
