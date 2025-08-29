@@ -1,47 +1,55 @@
+
 import { NextResponse } from "next/server";
-import { createClient } from "@sanity/client";
+import { createClient, ClientConfig } from "@sanity/client";
 
-const projectId = process.env.SANITY_PROJECT_ID;
-const dataset = process.env.SANITY_DATASET;
-const token = process.env.SANITY_API_TOKEN; // optional for public/published reads
+function getSanityConfig(): ClientConfig | null {
+  const projectId = process.env.SANITY_PROJECT_ID;
+  const dataset = process.env.SANITY_DATASET;
+  const token = process.env.SANITY_API_TOKEN;
+  if (!projectId || !dataset) return null;
+  return {
+    projectId,
+    dataset,
+    token,
+    apiVersion: "2025-08-01",
+    useCdn: false,
+    perspective: "published",
+  };
+}
 
-const sanity = createClient({
-  projectId,
-  dataset,
-  token,
-  apiVersion: "2025-08-01", // or pin to a stable date for reproducibility
-  useCdn: false,
-  perspective: "published",
-});
-
-export async function GET() {
-  // Validate env early for clearer errors
-  if (!projectId || !dataset) {
-    return NextResponse.json(
-      { ok: false, error: "Missing SANITY_PROJECT_ID or SANITY_DATASET" },
-      { status: 500 }
-    );
+function validateEnv(): { valid: true; config: ClientConfig } | { valid: false; error: string } {
+  const config = getSanityConfig();
+  if (!config) {
+    return { valid: false, error: "Missing SANITY_PROJECT_ID or SANITY_DATASET" };
   }
+  return { valid: true, config };
+}
 
+export async function GET(): Promise<Response> {
+  const env = validateEnv();
+  if (!env.valid) {
+    return NextResponse.json({ ok: false, error: env.error }, { status: 500 });
+  }
+  const sanity = createClient(env.config);
   try {
     // Tiny, safe sample query: fetch the first doc's id/type/updatedAt (any type)
-    const sample = await sanity.fetch(
+    const sample = await sanity.fetch<{ _id: string; _type: string; _updatedAt: string } | null>(
       `*[_type defined][0]{_id, _type, _updatedAt}`
     );
-
     // Also useful: how many docs exist (fast count)
     const docCount = await sanity.fetch<number>(`count(*[])`);
-
     return NextResponse.json({
       ok: true,
-      projectId,
-      dataset,
+      projectId: env.config.projectId,
+      dataset: env.config.dataset,
       docCount,
       sample: sample ?? null,
       timestamp: new Date().toISOString(),
     });
   } catch (e: unknown) {
     const msg = e instanceof Error ? e.message : String(e);
+    // Optionally log error for debugging
+    // console.error("Sanity health check error:", msg);
     return NextResponse.json({ ok: false, error: msg }, { status: 500 });
   }
 }

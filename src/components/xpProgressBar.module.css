@@ -1,0 +1,15 @@
+/* src/components/xpProgressBar.module.css */
+.xpBar {
+  animation: xpBar 2s linear infinite;
+}
+.glitch {
+  animation: glitch 1s linear infinite;
+}
+@keyframes xpBar {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
+}
+@keyframes glitch {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}

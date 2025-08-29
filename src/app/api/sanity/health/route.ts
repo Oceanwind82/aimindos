@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@sanity/client";
 
 const sanity = createClient({
-  projectId: process.env.SANITY_PROJECT_ID!,
-  dataset: process.env.SANITY_DATASET!,
-  token: process.env.SANITY_API_TOKEN!,
+  projectId: process.env.SANITY_PROJECT_ID,
+  dataset: process.env.SANITY_DATASET,
+  token: process.env.SANITY_API_TOKEN,
   apiVersion: "2025-08-01",
   useCdn: false,
   perspective: "published",
