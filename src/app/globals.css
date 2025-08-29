@@ -1,69 +1,26 @@
 @import "tailwindcss/preflight";
 @tailwind utilities;
 
-@import "tailwindcss/preflight";
-@tailwind utilities;
-
-/* Keep custom CSS minimal; avoid @apply for now to prevent Tailwind v4 @reference issues. */
-
+/* App base */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  color-scheme: dark;
 }
+html.dark body { @apply bg-black text-white; }
+html:not(.dark) body { @apply bg-white text-black; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-@import "tailwindcss/preflight";
-@tailwind utilities;
-body {
-/* Dark base */
-body {
-  @apply bg-black text-white font-sans;
-}
+body { @apply font-sans antialiased; }
 
-/* Neon link hover */
-a {
-  @apply text-brand-accent transition duration-300;
+/* Reusable UI helpers */
+.card {
+  @apply rounded-xl2 bg-brand-ink/70 backdrop-blur border border-white/10 p-5 shadow-neon;
 }
-a:hover {
-  @apply text-brand-danger;
+.neon-link { @apply underline decoration-brand-accent/60 hover:decoration-brand-danger/70; }
+.btn {
+  @apply inline-flex items-center gap-2 rounded-xl2 px-4 py-2 border border-white/10 hover:border-brand-accent/40 transition;
 }
-
-/* Glitch effect (optional) */
-.glitch {
-  position: relative;
-  color: white;
-  font-family: 'Orbitron', sans-serif;
-  text-transform: uppercase;
+.btn-primary {
+  @apply bg-brand-accent/10 hover:bg-brand-accent/20;
 }
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-}
-.glitch::before {
-  animation: glitch 1s infinite linear alternate-reverse;
-  color: #ff006e;
-}
-.glitch::after {
-  animation: glitch 1s infinite linear alternate;
-  color: #00ffff;
-}
-@keyframes glitch {
-  0% { transform: translate(2px, -2px); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(1px, -1px); }
-  100% { transform: translate(-1px, 1px); }
 }
   background: var(--background);
   color: var(--foreground);
