@@ -18,13 +18,14 @@
   "dependencies": {
     "@humanfs/types": "^0.15.0",
     "@sanity/client": "^6.29.1",
-    "@supabase/supabase-js": "^2.55.0",
+    "@supabase/supabase-js": "^2.56.1",
     "memfs": "^4.36.3",
     "minimatch": "^10.0.3",
     "next": "^15.4.6",
     "openai": "^5.12.2",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "resend": "^6.0.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
