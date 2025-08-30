@@ -1,0 +1,45 @@
+.motivation-badge-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url('/public/globe.svg') center/contain no-repeat;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.motivation-streak-bar {
+  background: #eee;
+  border-radius: 8px;
+  width: 100px;
+  height: 10px;
+  margin: 4px 0;
+  position: relative;
+}
+.motivation-streak-fill {
+  background: #4ade80;
+  height: 10px;
+  border-radius: 8px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+}
+.motivation-difficulty-easy {
+  color: #22d3ee;
+}
+.motivation-difficulty-normal {
+  color: #facc15;
+}
+.motivation-difficulty-hard {
+  color: #ef4444;
+}
+.lesson-media-audio {
+  margin-right: 8px;
+}
+.lesson-media-video {
+  margin-right: 8px;
+}
+.lesson-hook {
+  font-style: italic;
+  color: #6c63ff;
+  margin-bottom: 0.5em;
+}

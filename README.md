@@ -54,3 +54,17 @@ See `.env.example` for required variables.
 ## License
 
 MIT
+
+## AI Chat Usage
+
+- Set your OpenAI API key in your environment variables as `OPENAI_API_KEY`.
+- The API route `/api/ai/chat` accepts POST requests with a `messages` array (OpenAI chat format).
+- Use the `AIChat` React component to add a chat UI to any page:
+
+```tsx
+import AIChat from '@/components/AIChat';
+
+export default function Page() {
+  return <AIChat />;
+}
+```

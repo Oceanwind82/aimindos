@@ -1,39 +1,40 @@
-@import "tailwindcss/preflight";
 @tailwind utilities;
 
 /* App base */
 :root {
   color-scheme: dark;
 }
-html.dark body { @apply bg-black text-white; }
-html:not(.dark) body { @apply bg-white text-black; }
+html.dark body {
+  @apply bg-black text-white;
+}
+html:not(.dark) body {
+  @apply bg-white text-black;
+}
 
-body { @apply font-sans antialiased; }
+body {
+  @apply font-sans antialiased;
+}
 
 /* Reusable UI helpers */
 .card {
-  @apply rounded-xl2 bg-brand-ink/70 backdrop-blur border border-white/10 p-5 shadow-neon;
+  @apply rounded-2xl bg-gray-800 backdrop-blur border border-white/10 p-5 shadow-lg;
 }
-.neon-link { @apply underline decoration-brand-accent/60 hover:decoration-brand-danger/70; }
+.neon-link {
+  @apply underline hover:decoration-pink-500;
+}
 .btn {
-  @apply inline-flex items-center gap-2 rounded-xl2 px-4 py-2 border border-white/10 hover:border-brand-accent/40 transition;
+  @apply inline-flex items-center gap-2 rounded-2xl px-4 py-2 border border-white/10 hover:border-pink-500 transition;
 }
 .btn-primary {
-  @apply bg-brand-accent/10 hover:bg-brand-accent/20;
-}
-}
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  @apply bg-black text-white font-sans;
+  @apply bg-pink-500/10 hover:bg-pink-500/20;
 }
 
 /* Neon link hover */
 a {
-  @apply text-brand-accent transition duration-300;
+  @apply text-pink-500 transition duration-300;
 }
 a:hover {
-  @apply text-brand-danger;
+  @apply text-red-500;
 }
 
 /* Glitch effect (optional) */
@@ -58,11 +59,22 @@ a:hover {
   color: #00ffff;
 }
 @keyframes glitch {
-  0% { transform: translate(2px, -2px); }
-  20% { transform: translate(-2px, 2px); }
-  40% { transform: translate(-2px, -2px); }
-  60% { transform: translate(2px, 2px); }
-  80% { transform: translate(1px, -1px); }
-  100% { transform: translate(-1px, 1px); }
-}
+  0% {
+    transform: translate(2px, -2px);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(1px, -1px);
+  }
+  100% {
+    transform: translate(-1px, 1px);
+  }
 }

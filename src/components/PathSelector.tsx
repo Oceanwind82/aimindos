@@ -5,9 +5,12 @@ export interface PathSelectorProps {
 }
 
 export const PathSelector: React.FC<PathSelectorProps> = ({ paths }) => (
-  <ul className="path-selector">
-    {paths.map((path) => (
-      <li key={path}>{path}</li>
-    ))}
-  </ul>
+  <div>
+    <h3>Select a Path:</h3>
+    <ul className="path-selector">
+      {paths.map((path) => (
+        <li key={path}>{path}</li>
+      ))}
+    </ul>
+  </div>
 );

@@ -1,13 +1,19 @@
 import React from 'react';
+import styles from './StreakCounter.module.css';
 
 export interface StreakCounterProps {
-  streak: number;
+  count: number;
 }
 
-export default function StreakCounter({ streak }: Readonly<StreakCounterProps>) {
+export const StreakCounter: React.FC<StreakCounterProps> = ({ count }) => {
   return (
     <div className="streak-counter">
-      <span>Streak: {streak}</span>
+      <img
+        src="https://twemoji.maxcdn.com/v/latest/svg/1f525.svg"
+        alt="fire"
+        className={styles['fire-icon']}
+      />
+      <span>{count} day streak!</span>
     </div>
   );
-}
+};

@@ -22,8 +22,7 @@
         "name": "next"
       }
     ],
-    "forceConsistentCasingInFileNames": true
-    ,
+    "forceConsistentCasingInFileNames": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitAny": true,
@@ -31,17 +30,30 @@
     "exactOptionalPropertyTypes": true,
     "baseUrl": "./src",
     "paths": {
-      "@/*": ["*"],
-      "@components/*": ["components/*"],
-      "@app/*": ["app/*"]
+      "@/*": [
+        "*"
+      ],
+      "@components/*": [
+        "components/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@stories/*": [
+        "stories/*"
+      ]
     }
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
   ]
 }

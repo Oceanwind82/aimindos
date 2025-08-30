@@ -6,7 +6,7 @@ type User = {
 };
 
 export interface HeaderProps {
-  user?: User;
+  user?: User | undefined;
   onLogin?: () => void;
   onLogout?: () => void;
   onCreateAccount?: () => void;
@@ -40,12 +40,21 @@ export const Header = ({ user, onLogin, onLogout, onCreateAccount }: HeaderProps
             <span className="welcome">
               Welcome, <b>{user.name}</b>!
             </span>
-            <Button size="small" onClick={onLogout} label="Log out" />
+            {(() => {
+              const logoutProps = onLogout ? { onClick: onLogout } : {};
+              return <Button size="small" {...logoutProps} label="Log out" />;
+            })()}
           </>
         ) : (
           <>
-            <Button size="small" onClick={onLogin} label="Log in" />
-            <Button primary size="small" onClick={onCreateAccount} label="Sign up" />
+            {(() => {
+              const loginProps = onLogin ? { onClick: onLogin } : {};
+              return <Button size="small" {...loginProps} label="Log in" />;
+            })()}
+            {(() => {
+              const createAccountProps = onCreateAccount ? { onClick: onCreateAccount } : {};
+              return <Button primary size="small" {...createAccountProps} label="Sign up" />;
+            })()}
           </>
         )}
       </div>
