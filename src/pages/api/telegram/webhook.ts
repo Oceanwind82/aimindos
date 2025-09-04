@@ -11,7 +11,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Process Telegram update (message, callback, etc.)
-  // TODO: Add your Telegram bot logic here
+  // Example: Log the received Telegram update
+  console.log('Received Telegram update:', req.body);
+
+  // You can add further processing here, e.g., handling messages or callbacks
 
   res.status(200).json({ ok: true });
 }

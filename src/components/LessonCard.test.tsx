@@ -56,18 +56,19 @@ describe('LessonCard', () => {
     };
     render(<LessonCard lesson={lesson} />);
     expect(screen.getByText('Boss Battle: AI Mastery')).not.toBeNull();
+    expect(screen.getAllByText((text) => text.includes('AI Grandmaster')).length).toBeGreaterThan(
+      0
+    );
     expect(
-      screen.getAllByText((content, element) => element.textContent?.includes('AI Grandmaster'))
-        .length
-    ).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText((content, element) =>
-        element.textContent?.includes('Defeat the AI in a strategic showdown.')
+      screen.getAllByText((_, node) =>
+        (node?.textContent ?? '').includes('Defeat the AI in a strategic showdown.')
       ).length
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText((content, element) =>
-        element.textContent?.includes('Build a model that outsmarts the AI.')
+      screen.getAllByText((_, element) =>
+        element !== null && element.textContent !== null
+          ? element.textContent.includes('Build a model that outsmarts the AI.')
+          : false
       ).length
     ).toBeGreaterThan(0);
     expect(

@@ -20,7 +20,7 @@ export default function SignupPage() {
     const name = (formData.get('name') as string)?.trim() || null;
 
     const { data, error } = await supabase.from('waitlist').insert({ email, name }).select();
-    if (error || !data || !data[0]) {
+    if (error || !data?.[0]) {
       setStatus(`❌ ${error?.message || 'Signup failed'}`);
       setLoading(false);
       return;

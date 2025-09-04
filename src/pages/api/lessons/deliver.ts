@@ -9,35 +9,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const dryrun = req.query.dryrun;
 
   // TODO: Select all users with due lessons (for demo, use a test user)
-  const userId = (req.query.userId as string) || 'demo-user-id';
-  const dueLessons = await getDueLessons(userId);
+  // Assume you have a function getAllUsers() that returns all user IDs
+  import { getAllUsers } from '@/lib/profile'; // Add this import at the top if needed
 
+  const userIds = req.query.userId ? [req.query.userId as string] : await getAllUsers();
   const results = [];
   // Import lessons statically for demo
   const { ai, coding } = require('@/lib/lessons');
 
-  for (const queue of dueLessons) {
-    const profile = await getProfile(queue.user_id);
-    const lesson = findLessonById(queue.lesson_id, ai, coding);
-    const { motivationMsg, badgeAwarded, adaptiveDifficulty } = getMotivationAndDifficulty(
-      lesson,
-      profile
-    );
-    const pdfUrl = 'https://example.com/sample.pdf';
+  for (const userId of userIds) {
+    const dueLessons = await getDueLessons(userId);
 
-    if (!dryrun) {
-      await updateLessonQueueStatus(queue.id, 'sent');
+    for (const queue of dueLessons) {
+      const profile = await getProfile(queue.user_id);
+      const lesson = findLessonById(queue.lesson_id, ai, coding);
+      const { motivationMsg, badgeAwarded, adaptiveDifficulty } = getMotivationAndDifficulty(
+        lesson,
+        profile
+      );
+      const pdfUrl = 'https://example.com/sample.pdf';
+
+      if (!dryrun) {
+        await updateLessonQueueStatus(queue.id, 'sent');
+      }
+
+      results.push({
+        user: profile?.name,
+        lesson: lesson.title,
+        pdfUrl,
+        motivationMsg,
+        badgeAwarded,
+        adaptiveDifficulty,
+        status: dryrun ? 'dryrun' : 'sent',
+      });
     }
-
-    results.push({
-      user: profile?.name,
-      lesson: lesson.title,
-      pdfUrl,
-      motivationMsg,
-      badgeAwarded,
-      adaptiveDifficulty,
-      status: dryrun ? 'dryrun' : 'sent',
-    });
   }
 
   function findLessonById(lessonId: string | number, aiLessons: any[], codingLessons: any[]): any {
