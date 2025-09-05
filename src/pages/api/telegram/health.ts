@@ -6,7 +6,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!chatId) {
     return res.status(400).json({ ok: false, error: 'Missing chat_id' });
   }
-  // TODO: Send a test DM to Telegram chatId
-  // await sendTelegramMessage(chatId, 'pong');
+  // Send a test DM to Telegram chatId
+  await sendTelegramMessage(chatId, 'pong');
   res.status(200).json({ ok: true, sent: true, chatId });
+}
+
+// Stub function to simulate sending a Telegram message
+async function sendTelegramMessage(chatId: string, message: string): Promise<void> {
+  // Simulate sending message (replace with actual Telegram API call)
+  console.log(`Sending message to ${chatId}: ${message}`);
 }

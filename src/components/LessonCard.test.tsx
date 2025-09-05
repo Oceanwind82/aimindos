@@ -65,15 +65,15 @@ describe('LessonCard', () => {
       ).length
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText((_, element) =>
-        element !== null && element.textContent !== null
-          ? element.textContent.includes('Build a model that outsmarts the AI.')
-          : false
+      screen.getAllByText(
+        (_, element) =>
+          element?.textContent?.includes('Build a model that outsmarts the AI.') === true
       ).length
     ).toBeGreaterThan(0);
     expect(
-      screen.getAllByText((content, element) => element.textContent?.includes('Grandmaster Badge'))
-        .length
+      screen.getAllByText(
+        (_, element) => !!element && element.textContent?.includes('Grandmaster Badge') === true
+      ).length
     ).toBeGreaterThan(0);
     expect(screen.getByText(/Quiz:/)).not.toBeNull();
     expect(screen.getByText('What is the final step in model training?')).not.toBeNull();
