@@ -56,3 +56,8 @@ export async function setLastLessonAt(userId: string, timestamp: string): Promis
   }
   return true;
 }
+
+export async function getAllUsers() {
+  // TODO: Replace with real DB query
+  return ['demo-user-id'];
+}

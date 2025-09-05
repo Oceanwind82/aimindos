@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getDueLessons, updateLessonQueueStatus } from '@/lib/lessonQueue';
-import { getProfile } from '@/lib/profile';
+import { getProfile, getAllUsers } from '@/lib/profile';
 // import { fetchLesson } from '@/lib/lessons'; // If you have a DB lessons table
 // import { renderPDF } from '@/lib/pdf'; // Stub for PDF rendering
 // import { sendTelegramMessage } from '@/lib/telegram'; // Stub for Telegram
@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   // TODO: Select all users with due lessons (for demo, use a test user)
   // Assume you have a function getAllUsers() that returns all user IDs
-  import { getAllUsers } from '@/lib/profile'; // Add this import at the top if needed
 
   const userIds = req.query.userId ? [req.query.userId as string] : await getAllUsers();
   const results = [];

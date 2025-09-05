@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-// Update the import path if the file is named differently or located elsewhere
-import { sendConfirmationEmail } from '../../../lib/sendConfirmationEmail';
-// Or, if the file does not exist, create '../../../lib/sendConfirmationMessage.ts' with the following content:
+import { sendConfirmationEmail } from '../../lib/sendConfirmationEmail';
 
 export async function POST(req: NextRequest) {
   const { email, name } = await req.json();

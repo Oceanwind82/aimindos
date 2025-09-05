@@ -1,15 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 
 export default function SignupPage() {
   const [status, setStatus] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -19,18 +13,18 @@ export default function SignupPage() {
     const email = (formData.get('email') as string)?.trim().toLowerCase();
     const name = (formData.get('name') as string)?.trim() || null;
 
-    const { data, error } = await supabase.from('waitlist').insert({ email, name }).select();
-    if (error || !data?.[0]) {
-      setStatus(`❌ ${error?.message || 'Signup failed'}`);
-      setLoading(false);
-      return;
+    try {
+      const res = await fetch('/signup/api', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name }),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || 'Signup failed');
+      setStatus('✅ Request received! Check your email for a confirmation link.');
+    } catch (err: any) {
+      setStatus(`❌ ${err.message}`);
     }
-    // Generate confirmation link (demo: show to user)
-    const confirmUrl = `${window.location.origin}/api/signup/confirm?id=${data[0].id}&token=dummy`;
-    setStatus(
-      `✅ Request received! Check your email and click to confirm: ` +
-        `<a href='${confirmUrl}' target='_blank' class='underline'>Confirm your signup</a>`
-    );
     setLoading(false);
     e.currentTarget.reset();
   }
