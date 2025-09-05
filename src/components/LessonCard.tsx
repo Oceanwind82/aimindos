@@ -68,8 +68,8 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson }) => {
         <div className={styles['lesson-swipefile']}>
           <strong>Swipe File:</strong>
           <ul>
-            {lesson.swipeFile.map((item, i) => (
-              <li key={i}>
+            {lesson.swipeFile.map((item) => (
+              <li key={item}>
                 <code>{item}</code>
               </li>
             ))}

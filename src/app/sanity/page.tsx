@@ -9,7 +9,7 @@ export default async function Page() {
   return (
     <section>
       <h1>Sanity Home</h1>
-      <pre style={{ background: '#111', color: '#eee', padding: 12, borderRadius: 8 }}>
+      <pre className="bg-zinc-900 text-gray-100 p-3 rounded-lg">
         {JSON.stringify(health, null, 2)}
       </pre>
       <p>

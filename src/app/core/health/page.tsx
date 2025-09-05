@@ -10,9 +10,7 @@ export default async function Page() {
   return (
     <section>
       <h1>Core Health</h1>
-      <pre style={{ background: '#111', color: '#eee', padding: 12, borderRadius: 8 }}>
-        {JSON.stringify(data, null, 2)}
-      </pre>
+      <pre className="core-health-pre">{JSON.stringify(data, null, 2)}</pre>
       <p>
         {data.ok
           ? '✅ All required environment variables are set.'

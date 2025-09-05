@@ -8,7 +8,11 @@ const AI_COMMANDS = [
   { label: 'Explain', value: '/explain' },
 ];
 
-export default function QuickActionBar({ onCommand }: { onCommand: (cmd: string) => void }) {
+export default function QuickActionBar({
+  onCommand,
+}: {
+  readonly onCommand: (cmd: string) => void;
+}) {
   const [input, setInput] = useState('');
   const [show, setShow] = useState(false);
   const [filtered, setFiltered] = useState(AI_COMMANDS);

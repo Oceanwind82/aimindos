@@ -1,0 +1,6 @@
+.progressBar {
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  background: #10b981; /* emerald-500 */
+  transition: width 0.3s;
+}

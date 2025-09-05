@@ -3,11 +3,102 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { plans, featuresMatrix, faqs, testimonials, logos } from '@app/pricing/pricing.data';
-import { Analytics } from '@vercel/analytics/react';
 import Head from 'next/head';
 import { useEffect, useState, useRef, Suspense } from 'react';
 import confetti from 'canvas-confetti';
 import { useSearchParams } from 'next/navigation';
+
+// Demo modal for plan features (accessible, uses <dialog>)
+function PlanDemoModal({
+  open,
+  onClose,
+  planId,
+}: Readonly<{ open: boolean; onClose: () => void; planId: string }>) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    if (open) {
+      dialogRef.current?.showModal();
+    } else {
+      dialogRef.current?.close();
+    }
+  }, [open]);
+  let demoContent;
+  if (planId === 'elite') {
+    demoContent = (
+      <div className="space-y-3">
+        <h3 className="text-lg font-bold text-accentCrimson">Elite AI Chat Demo</h3>
+        <div className="rounded bg-zinc-900 p-3 text-white text-sm">
+          Try chatting with our advanced AI! <span className="italic">(Demo only)</span>
+        </div>
+        <input
+          className="w-full rounded border px-2 py-1 text-black"
+          placeholder="Type a message..."
+          disabled
+        />
+        <div className="text-xs text-neutralSilver">Full chat unlocked with Elite.</div>
+      </div>
+    );
+  } else if (planId === 'pro') {
+    demoContent = (
+      <div className="space-y-3">
+        <h3 className="text-lg font-bold text-accentGold">Pro Lesson Preview</h3>
+        <div className="rounded bg-white p-3 text-black text-sm">
+          Access premium lessons and learning paths.
+          <br />
+          <span className="italic">(Demo preview)</span>
+        </div>
+        <button
+          className="mt-2 px-3 py-1 rounded bg-accentGold text-black font-semibold focus-visible:ring-2 focus-visible:ring-accentGold focus:outline-none hover:bg-accentCrimson hover:text-neutralSilver transition-colors"
+          disabled
+          type="button"
+          aria-label="Start Lesson (demo only)"
+        >
+          Start Lesson
+        </button>
+      </div>
+    );
+  } else {
+    demoContent = (
+      <div className="space-y-3">
+        <h3 className="text-lg font-bold text-neutralSilver">Free Plan Demo</h3>
+        <div className="rounded bg-white p-3 text-black text-sm">
+          Try basic features and explore the platform.
+          <br />
+          <span className="italic">(Demo only)</span>
+        </div>
+        <button
+          className="mt-2 px-3 py-1 rounded bg-neutralSilver text-white font-semibold focus-visible:ring-2 focus-visible:ring-accentGold focus:outline-none hover:bg-accentGold hover:text-black transition-colors"
+          disabled
+          type="button"
+          aria-label="Try Now (demo only)"
+        >
+          Try Now
+        </button>
+      </div>
+    );
+  }
+  return (
+    <dialog
+      ref={dialogRef}
+      className="z-50 rounded-2xl shadow-xl p-0 max-w-md w-full bg-white dark:bg-zinc-900"
+      aria-modal="true"
+      aria-label="Plan Demo"
+      onClose={onClose}
+    >
+      <form method="dialog" className="relative p-6">
+        <button
+          className="absolute top-2 right-2 text-2xl text-neutralSilver hover:text-accentGold focus:outline-none focus-visible:ring-2 focus-visible:ring-accentGold"
+          aria-label="Close demo"
+          onClick={onClose}
+          type="button"
+        >
+          ×
+        </button>
+        {demoContent}
+      </form>
+    </dialog>
+  );
+}
 
 // Type definitions for local use
 // (If you want to share types, move these to pricing.data.ts and export them)
@@ -64,6 +155,8 @@ function ReferralToast() {
 export default function PricingPage() {
   const [showToast, setShowToast] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [demoOpen, setDemoOpen] = useState(false);
+  const [demoPlan, setDemoPlan] = useState<string | null>(null);
   // FAQ accordion state
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const referralLink =
@@ -96,6 +189,13 @@ export default function PricingPage() {
   return (
     <Suspense>
       <div className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+        {/* Plan Demo Modal */}
+        <PlanDemoModal
+          open={demoOpen}
+          onClose={() => setDemoOpen(false)}
+          planId={demoPlan || 'free'}
+        />
+
         {/* Referral Success Toast */}
         <ReferralToast />
 
@@ -205,7 +305,20 @@ export default function PricingPage() {
                       </li>
                     ))}
                   </ul>
-
+                  {/* Plan Demo Button */}
+                  <div className="mt-4 flex justify-end">
+                    <button
+                      className="text-xs underline text-accentGold hover:text-accentCrimson focus-visible:ring-2 focus-visible:ring-accentGold focus:outline-none"
+                      onClick={() => {
+                        setDemoPlan(p.id);
+                        setDemoOpen(true);
+                      }}
+                      type="button"
+                      aria-label={`Try ${p.name} plan demo`}
+                    >
+                      Try Demo
+                    </button>
+                  </div>
                   {/* CTA */}
                   <div className="mt-6">
                     <Link
@@ -350,10 +463,11 @@ export default function PricingPage() {
                   <button
                     id={`faq-button-${i}`}
                     className="w-full text-left font-medium flex items-center justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-accentGold transition-colors"
-                    aria-expanded={openFaq === i}
+                    aria-expanded={openFaq === i ? 'true' : 'false'}
                     aria-controls={`faq-panel-${i}`}
                     onClick={() => setOpenFaq(openFaq === i ? null : i)}
                     type="button"
+                    aria-label={`Toggle FAQ: ${f.q}`}
                   >
                     {f.q}
                     <span
@@ -429,8 +543,9 @@ export default function PricingPage() {
                 />
                 <button
                   onClick={handleCopyReferral}
-                  className="bg-accentGold text-black font-semibold px-3 py-1 rounded shadow hover:bg-accentCrimson hover:text-neutralSilver transition-colors text-xs border border-accentGold focus-visible:ring-2 focus-visible:ring-accentGold"
+                  className="bg-accentGold text-black font-semibold px-3 py-1 rounded shadow hover:bg-accentCrimson hover:text-neutralSilver transition-colors text-xs border border-accentGold focus-visible:ring-2 focus-visible:ring-accentGold focus:outline-none"
                   type="button"
+                  aria-label="Copy referral link"
                 >
                   Copy Link
                 </button>
@@ -494,8 +609,6 @@ export default function PricingPage() {
             Terms of Service
           </Link>
         </footer>
-
-        <Analytics />
       </div>
     </Suspense>
   );

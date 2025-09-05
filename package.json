@@ -10,6 +10,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier --write .",
     "test": "vitest run",
+    "test:ui": "vitest",
+    "test:watch": "vitest --watch",
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -18,7 +20,7 @@
   "dependencies": {
     "@humanfs/types": "^0.15.0",
     "@sanity/client": "^6.29.1",
-    "@supabase/supabase-js": "^2.56.1",
+    "@supabase/supabase-js": "^2.57.2",
     "@vercel/analytics": "^1.5.0",
     "canvas-confetti": "^1.9.3",
     "memfs": "^4.36.3",
@@ -27,7 +29,8 @@
     "openai": "^5.12.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "resend": "^6.0.2"
+    "resend": "^6.0.2",
+    "swr": "^2.3.6"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",

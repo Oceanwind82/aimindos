@@ -15,8 +15,11 @@ const RecentActivityFeed: React.FC<RecentActivityFeedProps> = ({ items }) => (
   <div className="bg-white/80 rounded-2xl shadow p-6 mb-6 max-w-xs mx-auto">
     <h3 className="text-lg font-bold text-accentGold mb-4 text-center">Recent Activity</h3>
     <ul>
-      {items.map((item, i) => (
-        <li key={i} className="flex items-center gap-2 mb-3 text-sm">
+      {items.map((item) => (
+        <li
+          key={`${item.user}-${item.action}-${item.time}`}
+          className="flex items-center gap-2 mb-3 text-sm"
+        >
           {item.avatarUrl && (
             <img src={item.avatarUrl} alt={item.user} className="w-6 h-6 rounded-full border" />
           )}

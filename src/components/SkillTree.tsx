@@ -1,4 +1,5 @@
 import React from 'react';
+import './SkillTree.css';
 
 export type SkillNode = {
   id: string;
@@ -43,53 +44,63 @@ export const SkillTree: React.FC<SkillTreeProps> = ({
   }));
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4 text-center">Skill Tree</h2>
-      {/* Streak & Progress Bar */}
-      <div className="flex items-center justify-center gap-4 mb-4">
-        <span className="text-xs text-accentGold font-bold">Streak: {streak} days</span>
-        <div className="flex-1 h-3 bg-neutralSilver/30 rounded-full overflow-hidden max-w-xs">
-          <div className="h-full bg-accentGold transition-all" style={{ width: `${progress}%` }} />
+    <>
+      <div className="w-full max-w-3xl mx-auto p-6">
+        <h2 className="text-2xl font-bold mb-4 text-center">Skill Tree</h2>
+        {/* Streak & Progress Bar */}
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <span className="text-xs text-accentGold font-bold">Streak: {streak} days</span>
+          <label htmlFor="skilltree-progress" className="sr-only">
+            Progress
+          </label>
+          <progress
+            id="skilltree-progress"
+            className="w-40 h-3 rounded-full overflow-hidden skilltree-progress-bar"
+            value={progress}
+            max={100}
+            aria-label="Progress"
+          />
         </div>
         <span className="text-xs text-neutralSilver font-bold">{progress}%</span>
-      </div>
-      <div className="flex flex-col gap-8">
-        {grouped.map((group) => (
-          <div key={group.tier}>
-            <h3 className={`text-lg font-semibold mb-2 capitalize ${tierColors[group.tier]}`}>
-              {group.tier}
-            </h3>
-            <div className="flex gap-4 flex-wrap justify-center">
-              {group.nodes.map((node) => (
-                <button
-                  key={node.id}
-                  className={`relative rounded-xl px-4 py-3 shadow border-2 transition-all duration-200 text-sm font-bold focus-visible:ring-2 focus-visible:ring-accentGold
-                    ${tierColors[node.tier]} 
-                    ${node.unlocked ? 'opacity-100' : 'opacity-40'}
-                    ${node.completed ? 'ring-2 ring-green-500' : ''}
-                    ${selectedId === node.id ? 'scale-105 border-accentGold' : 'border-neutralSilver'}
-                  `}
-                  disabled={!node.unlocked}
-                  onClick={() => onSelectNode?.(node.id)}
-                  aria-label={node.title + (node.completed ? ' (completed)' : '')}
-                >
-                  {node.title}
-                  {node.completed && <span className="ml-2 text-green-600">✓</span>}
-                  {node.isNew && (
-                    <span className="absolute -top-2 -right-2 bg-accentCrimson text-white text-[10px] px-2 py-0.5 rounded-full">
-                      NEW
-                    </span>
-                  )}
-                </button>
-              ))}
+        <div className="flex flex-col gap-8">
+          {grouped.map((group) => (
+            <div key={group.tier}>
+              <h3 className={`text-lg font-semibold mb-2 capitalize ${tierColors[group.tier]}`}>
+                {group.tier}
+              </h3>
+              <div className="flex gap-4 flex-wrap justify-center">
+                {group.nodes.map((node) => (
+                  <button
+                    key={node.id}
+                    className={`relative rounded-xl px-4 py-3 shadow border-2 transition-all duration-200 text-sm font-bold focus-visible:ring-2 focus-visible:ring-accentGold
+                      ${tierColors[node.tier]} 
+                      ${node.unlocked ? 'opacity-100' : 'opacity-40'}
+                      ${node.completed ? 'ring-2 ring-green-500' : ''}
+                      ${selectedId === node.id ? 'scale-105 border-accentGold' : 'border-neutralSilver'}
+                    `}
+                    disabled={!node.unlocked}
+                    onClick={() => onSelectNode?.(node.id)}
+                    aria-label={node.title + (node.completed ? ' (completed)' : '')}
+                  >
+                    {node.title}
+                    {node.completed && <span className="ml-2 text-green-600">✓</span>}
+                    {node.isNew && (
+                      <span className="absolute -top-2 -right-2 bg-accentCrimson text-white text-[10px] px-2 py-0.5 rounded-full">
+                        NEW
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      {/* Weekly Challenge */}
-      <div className="mt-8 text-xs text-center text-gray-500">
-        <strong>Weekly Challenge:</strong> <span>{weeklyChallenge || 'Automate Your Morning'}</span>{' '}
-        | <span>Dynamic updates coming soon!</span>
+          ))}
+        </div>
+        {/* Weekly Challenge */}
+        <div className="mt-8 text-xs text-center text-gray-500">
+          <strong>Weekly Challenge:</strong>{' '}
+          <span>{weeklyChallenge || 'Automate Your Morning'}</span> |{' '}
+          <span>Dynamic updates coming soon!</span>
+        </div>
       </div>
       {/* Unlock Modal */}
       {unlockMessage && (
@@ -106,7 +117,7 @@ export const SkillTree: React.FC<SkillTreeProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

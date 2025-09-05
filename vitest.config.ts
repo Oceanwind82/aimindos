@@ -2,6 +2,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 
@@ -10,14 +12,14 @@ const dirname =
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
+  plugins: [react(), tsconfigPaths()],
   test: {
-    include: [
-      'src/**/*.test.{ts,tsx}',
-      'src/components/**/*.test.{ts,tsx}',
-      'src/components/**/*.spec.{ts,tsx}',
-    ],
-    exclude: ['src/**/*.stories.{ts,tsx}'],
     environment: 'jsdom',
+    setupFiles: ['.storybook/vitest.setup.ts'],
+    css: true,
+    globals: true,
+    include: ['src/**/*.{test,spec}.{ts,tsx}', 'src/components/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['src/**/*.stories.{ts,tsx}'],
     projects: [
       {
         extends: true,
@@ -30,7 +32,6 @@ export default defineConfig({
             provider: 'playwright',
             instances: [{ browser: 'chromium' }],
           },
-          setupFiles: ['.storybook/vitest.setup.ts'],
         },
       },
     ],
