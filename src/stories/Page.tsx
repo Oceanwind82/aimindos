@@ -47,11 +47,11 @@ export const Page: React.FC = () => {
           Get a guided tutorial on component-driven development at{' '}
           <a href="https://storybook.js.org/tutorials/" target="_blank" rel="noopener noreferrer">
             Storybook tutorials
-          </a>
+          </a>{' '}
           . Read more in the{' '}
           <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer">
             docs
-          </a>
+          </a>{' '}
           .
         </p>
         <div className="tip-wrapper">

@@ -1,14 +1,25 @@
-import { createClient } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function GET() {
-  const { data, error } = await supabase.from('waitlist').select('*').limit(1);
-  if (error) {
-    return new Response(`❌ Supabase connection failed: ${error.message}`, { status: 500 });
+  const url = process.env.SUPABASE_URL;
+  const anon = process.env.SUPABASE_ANON_KEY;
+
+  if (!url || !anon) {
+    return NextResponse.json(
+      { ok: false, error: 'Missing SUPABASE_URL or SUPABASE_ANON_KEY.' },
+      { status: 500 }
+    );
   }
-  return new Response(`✅ Supabase connection succeeded! Data: ${JSON.stringify(data)}`);
+
+  try {
+    // Cheap no-op: hit the health endpoint via fetch through the URL we already have
+    const r = await fetch(`${url.replace(/\/+$/, '')}/auth/v1/health`, { cache: 'no-store' });
+    return NextResponse.json({ ok: r.ok });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : 'Unknown error';
+    return NextResponse.json({ ok: false, error: msg }, { status: 502 });
+  }
 }
