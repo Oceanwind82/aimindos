@@ -18,6 +18,30 @@ export const LessonSchema = z.object({
   title: z.string(),
   description: z.string(),
   hook: z.string().optional(),
+  core: z
+    .object({
+      text: z.string(),
+      visualUrl: z.string().optional(),
+      audioUrl: z.string().optional(),
+      pdfUrl: z.string().optional(),
+    })
+    .optional(),
+  action: z.string().optional(),
+  reflection: z.string().optional(),
+  swipeFile: z.array(z.string()).optional(),
+  adaptiveLayers: z
+    .object({
+      beginner: z.string().optional(),
+      advanced: z.string().optional(),
+    })
+    .optional(),
+  gamification: z
+    .object({
+      xp: z.number().optional(),
+      badge: z.string().optional(),
+      duel: z.boolean().optional(),
+    })
+    .optional(),
   quiz: z.array(QuizQuestionSchema).optional(),
   microTask: MicroTaskSchema.optional(),
   difficulty: z.enum(['beginner', 'intermediate', 'advanced']).optional(),
@@ -60,182 +84,67 @@ export type Lesson = z.infer<typeof LessonSchema>;
 export type QuizQuestion = z.infer<typeof QuizQuestionSchema>;
 export type MicroTask = z.infer<typeof MicroTaskSchema>;
 
-const lessons: Record<string, Lesson[]> = {
-  ai: [
-    {
-      id: 1,
-      title: 'Intro to AI',
-      description: 'Understand the basics of AI.',
-      hook: 'Today, you unlock the algorithm rebels fear.',
-      storyline:
-        'Chapter 1: The Awakening. You step into a world where machines begin to think, and your journey as an AI explorer begins.',
-      creatorMode: false,
-      feedback: [
-        { userId: 'user1', comment: 'Great intro, very clear!', rating: 5 },
-        { userId: 'user2', comment: 'Loved the storyline.', rating: 4 },
-      ],
-      mentor: 'guide',
-      bossBattle: {
-        title: 'AI Boss Battle: The Turing Test',
-        description: 'Prove your understanding by passing the ultimate AI challenge.',
-        challenge: 'Design a prompt that convinces an AI to act indistinguishably from a human.',
-        reward: 'AI Explorer Badge',
-      },
-      motivation: {
-        message: 'Keep your streak alive for bonus XP!',
-        badge: 'Streak Starter',
-        streakRequired: 3,
-        adaptiveDifficulty: 'easy',
-        feedbackType: 'positive',
-      },
-      quiz: [
-        {
-          id: 1,
-          type: 'multiple-choice',
-          question: 'What does AI stand for?',
-          options: ['Artificial Intelligence', 'Automated Input', 'Active Inquiry'],
-          answer: 'Artificial Intelligence',
-        },
-        {
-          id: 2,
-          type: 'flashcard',
-          question: "Define 'machine learning'.",
-          answer: 'A subset of AI focused on algorithms that learn from data.',
-        },
-      ],
-      microTask: {
-        id: 1,
-        description: "Try asking ChatGPT: 'Explain AI in one sentence.'",
-      },
-      difficulty: 'beginner',
-      path: 'ai',
-      audioUrl: 'https://example.com/audio/ai-intro.mp3',
-      videoUrl: 'https://example.com/video/ai-intro.mp4',
-      demo: 'chatbot',
+export const lessons = [
+  {
+    id: 1,
+    title: 'Prompt Engineering',
+    description: 'Learn to structure prompts for optimal AI output.',
+    hook: 'Your AI is only as smart as the question you ask. Here’s how to weaponize it.',
+    core: {
+      text: 'See how two real prompts produce different results. Try rewriting your own!',
+      visualUrl: '/lesson-visuals/prompt-comparison.png',
+      audioUrl: '/lesson-audio/prompt-engineering.mp3',
+      pdfUrl: '/lesson-pdfs/prompt-engineering.pdf',
     },
-    {
-      id: 2,
-      title: 'Prompt Engineering',
-      description: 'Learn how to talk to AI effectively.',
-      hook: 'You’re about to master the language that moves machines.',
-      storyline:
-        'Chapter 2: The Language of Machines. You discover the secret codes that unlock new AI powers.',
-      creatorMode: true,
-      feedback: [{ userId: 'user3', comment: 'Prompt tips were super useful.', rating: 5 }],
-      mentor: 'challenger',
-      motivation: {
-        message: 'Challenge yourself for a new badge!',
-        badge: 'Prompt Pro',
-        streakRequired: 5,
-        adaptiveDifficulty: 'normal',
-        feedbackType: 'neutral',
-      },
-      quiz: [
-        {
-          id: 1,
-          type: 'multiple-choice',
-          question: 'What is a prompt?',
-          options: ['A question', 'A command', 'Both'],
-          answer: 'Both',
-        },
-      ],
-      microTask: {
-        id: 2,
-        description: 'Write a prompt for generating a blog post about AI.',
-      },
-      difficulty: 'intermediate',
-      path: 'ai',
-      audioUrl: 'https://example.com/audio/prompt-engineering.mp3',
-      videoUrl: 'https://example.com/video/prompt-engineering.mp4',
-      demo: 'prompt-playground',
+    action: 'Rewrite one of your own prompts using today’s rule.',
+    reflection: 'Drop your before/after prompt in your dashboard → earn XP.',
+    swipeFile: [
+      'Rewrite: "Summarize this article for a 5th grader."',
+      'Chain: "Draft LinkedIn post → summarize → auto-publish."',
+    ],
+    adaptiveLayers: {
+      beginner: 'Try rewriting a simple question.',
+      advanced: 'Chain 3 prompts into a workflow using n8n.',
     },
-  ],
-  coding: [
-    {
-      id: 1,
-      title: 'HTML Basics',
-      description: 'Learn the building blocks of the web.',
-      hook: 'Step into the code vault: the web’s foundation awaits.',
-      storyline: 'Chapter 1: The Websmith. You forge the first links in the chain of the internet.',
-      creatorMode: false,
-      feedback: [{ userId: 'user4', comment: 'Easy to follow!', rating: 5 }],
-      mentor: 'storyteller',
-      motivation: {
-        message: 'Complete this lesson to unlock the Websmith badge!',
-        badge: 'Websmith',
-        streakRequired: 1,
-        adaptiveDifficulty: 'easy',
-        feedbackType: 'positive',
-      },
-      bossBattle: {
-        title: 'Coding Boss Battle: The Web Forge',
-        description: 'Demonstrate your mastery by building a multi-section HTML page.',
-        challenge: 'Create an HTML page with a header, navigation, main content, and footer.',
-        reward: 'Websmith Badge',
-      },
-      quiz: [
-        {
-          id: 1,
-          type: 'multiple-choice',
-          question: 'What does HTML stand for?',
-          options: [
-            'HyperText Markup Language',
-            'Home Tool Markup Language',
-            'Hyperlinks and Text Markup Language',
-          ],
-          answer: 'HyperText Markup Language',
-        },
-      ],
-      microTask: {
-        id: 3,
-        description: 'Create a simple HTML page with a heading and a paragraph.',
-      },
-      difficulty: 'beginner',
-      path: 'coding',
-      audioUrl: 'https://example.com/audio/html-basics.mp3',
-      videoUrl: 'https://example.com/video/html-basics.mp4',
-      demo: 'code-cell',
+    gamification: {
+      xp: 50,
+      badge: 'Prompt Pro',
+      duel: true,
     },
-    {
-      id: 2,
-      title: 'JavaScript Intro',
-      description: 'Make websites interactive.',
-      hook: 'You now wield the power to make the web come alive.',
-      storyline:
-        'Chapter 2: The Animator. You breathe life into static pages, making them dance to your code.',
-      creatorMode: true,
-      feedback: [{ userId: 'user5', comment: 'Fun coding task!', rating: 4 }],
-      mentor: 'coach',
-      motivation: {
-        message: 'Keep going to earn the Animator badge!',
-        badge: 'Animator',
-        streakRequired: 2,
-        adaptiveDifficulty: 'normal',
-        feedbackType: 'positive',
-      },
-      quiz: [
-        {
-          id: 1,
-          type: 'flashcard',
-          question: 'What is a variable in JavaScript?',
-          answer: 'A container for storing data values.',
-        },
-      ],
-      microTask: {
-        id: 4,
-        description: 'Write a JS function that adds two numbers.',
-      },
-      difficulty: 'beginner',
-      path: 'coding',
-      audioUrl: 'https://example.com/audio/js-intro.mp3',
-      videoUrl: 'https://example.com/video/js-intro.mp4',
-      demo: 'code-cell',
+    difficulty: 'beginner' as const,
+    path: 'prompt-engineering',
+    completed: true,
+  },
+  {
+    id: 2,
+    title: 'Automation Basics',
+    description: 'Automate repetitive tasks with AI tools.',
+    hook: 'What if you could automate your morning routine with one click?',
+    core: {
+      text: 'Learn the basics of automation and set up your first workflow.',
+      visualUrl: '/lesson-visuals/automation-basics.png',
     },
-  ],
-};
+    action: 'Automate a daily task using a template.',
+    reflection: 'What did you automate today?',
+    swipeFile: ['Use Zapier to connect Gmail and Notion.'],
+    adaptiveLayers: {
+      beginner: 'Start with a simple email automation.',
+      advanced: 'Add a conditional step to your workflow.',
+    },
+    gamification: {
+      xp: 40,
+      badge: 'Automator',
+      duel: false,
+    },
+    difficulty: 'beginner' as const, // changed to string literal type
+    path: 'automation',
+    completed: false,
+  },
+];
 
 export async function getLessonsForPath(path: string): Promise<Lesson[]> {
-  const result = lessons[path] || [];
+  // Filter lessons array by path
+  const result = lessons.filter((lesson) => lesson.path === path);
   // Validate each lesson
   return result.filter((lesson) => LessonSchema.safeParse(lesson).success);
 }
