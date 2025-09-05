@@ -24,3 +24,28 @@ jobs:
         run: npm run build
       - name: Run tests
         run: npm run test
+      - name: Set database URLs
+        run: |
+          echo "DB_URL=postgresql://user:pass@host:5432/targetdb?sslmode=require" >> $GITHUB_ENV
+          echo "DB_SHADOW_URL=postgresql://user:pass@host:5432/shadowdb?sslmode=require" >> $GITHUB_ENV
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Apply migrations with psql (no CLI needed)
+        run: |
+          for f in $(ls -1 supabase/migrations | sort); do
+            echo "Applying $f"
+            psql "$DB_URL" -v ON_ERROR_STOP=1 -f "supabase/migrations/$f"
+          done
+        env:
+          DB_URL: ${{ env.DB_URL }}
+      # The following Supabase CLI steps are optional for schema diffing and migration generation.
+      # They will not fail the workflow if the image/CDN is unavailable.
+      - name: Pull schema from remote target (optional)
+        run: supabase db pull --db-url "$DB_URL"
+        continue-on-error: true
+      - name: Diff local migrations against remote target using the remote shadow (optional)
+        run: supabase db diff --db-url "$DB_URL" --shadow-db-url "$DB_SHADOW_URL"
+        continue-on-error: true
+      - name: Push/Apply migrations to the target DB (optional)
+        run: supabase db push --db-url "$DB_URL" --shadow-db-url "$DB_SHADOW_URL"
+        continue-on-error: true
